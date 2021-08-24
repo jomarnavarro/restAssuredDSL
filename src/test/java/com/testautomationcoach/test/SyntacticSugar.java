@@ -12,12 +12,11 @@ public class SyntacticSugar {
     @Test
     public void syntacticSugar() {
         RestAssured.get("https://api.github.com")
-                .then()
+            .then()
                 .assertThat()
-                .statusCode(HttpStatus.SC_OK)
+                    .statusCode(HttpStatus.SC_OK)
                 .and()
-                .assertThat()
-                .header("Server", "GitHub.com");
+                    .header("Server", "GitHub.com");
     }
 
     @Test
@@ -26,4 +25,5 @@ public class SyntacticSugar {
         String actual = response.getHeader("Server");
         assertEquals(actual, "GitHub.com");
     }
+
 }
