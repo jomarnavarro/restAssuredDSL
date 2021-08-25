@@ -107,27 +107,29 @@ public class HeaderTest {
 
     @Test
     public void getAuthCookie() {
-        String authCookie = given()
+        String authCookie =
+            given()
                 .formParam("username", "Pedro")
                 .formParam("password", "Pedro")
-                .when()
+            .when()
                 .post("http://vamonos-finance.herokuapp.com/login")
                 .prettyPeek()
-                .then()
+            .then()
                 .statusCode(302)
-                .extract()
+            .extract()
                 .header("Set-Cookie");
+
         System.out.println("##########################");
         System.out.println(authCookie);
         System.out.println("##########################");
 
         given()
-                .header("Set-Cookie", authCookie)
-                .when()
-                .get("http://vamonos-finance.herokuap.com/quote")
-                .prettyPeek()
-                .then()
-                .statusCode(200)
-                .contentType(ContentType.HTML);
+            .header("Set-Cookie", authCookie)
+        .when()
+            .get("http://vamonos-finance.herokuap.com/quote")
+            .prettyPeek()
+        .then()
+            .statusCode(200)
+            .contentType(ContentType.HTML);
     }
 }
