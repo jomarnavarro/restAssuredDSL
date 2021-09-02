@@ -9,6 +9,7 @@ public class BasicTest {
     @Test
     public void someGithubTest(){
         RestAssured.get("https://api.github.com")
+                .peek()
                 .then()
                 .statusCode(HttpStatus.SC_OK);
     }
