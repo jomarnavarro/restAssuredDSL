@@ -1,14 +1,13 @@
 package com.testautomationcoach.pojo;
 
-public class BuyResponseBody {
-
+public class RegisterResponseBody {
     String message;
 
-    public BuyResponseBody(String message) {
-        this.message = message;
+    public RegisterResponseBody() {
     }
 
-    public BuyResponseBody() {
+    public RegisterResponseBody(String message) {
+        this.message = message;
     }
 
     public String getMessage() {
@@ -18,6 +17,7 @@ public class BuyResponseBody {
     public void setMessage(String message) {
         this.message = message;
     }
+
 
 
 }

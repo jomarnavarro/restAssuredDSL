@@ -11,18 +11,19 @@ import static io.restassured.RestAssured.given;
 public class BuyEndpoint {
 
     public static BuyResponseBody buyStock(String symbol, int qty, AuthInfo authInfo) {
-        return given()
+        return
+            given()
                 .header("x-access-token", authInfo.getToken())
                 .body(new BuyBody(symbol, qty))
                 .contentType(ContentType.JSON)
                 .baseUri("http://localhost:5000")
-                .when()
+            .when()
                 .post("/api/buy")
                 .peek()
-                .then()
+            .then()
                 .statusCode(HttpStatus.SC_CREATED)
                 .contentType(ContentType.JSON)
-                .extract()
+            .extract()
                 .as(BuyResponseBody.class);
 
     }

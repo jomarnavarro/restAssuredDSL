@@ -2,12 +2,15 @@ package com.testautomationcoach.test;
 
 import com.testautomationcoach.endpoints.BuyEndpoint;
 import com.testautomationcoach.endpoints.LoginEndpoint;
+import com.testautomationcoach.endpoints.RegisterEndpoint;
 import com.testautomationcoach.pojo.*;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matchers;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.util.Random;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
@@ -70,7 +73,39 @@ public class ApiExamples {
     public void buyStockHappierPath() {
         AuthInfo authInfo = LoginEndpoint.login("Pedro", "Pedro");
         BuyResponseBody brb = BuyEndpoint.buyStock("MSFT", 1, authInfo );
-        System.out.println(brb.getMessage());
+        assertTrue(brb.getMessage().contains("MSFT"));
+        assertTrue(brb.getMessage().contains("1"));
+
+    }
+
+    @Test
+    public void testRegisterUser() {
+        String username = "JuanPablo" + new Random().nextInt(1000000);
+        AuthInfo authInfo = LoginEndpoint.login("Pedro", "Pedro");
+        RegisterResponseBody rrb = RegisterEndpoint.registerNewUser(username, "test1234", authInfo);
+        assertTrue(rrb.getMessage().contains("User " + username + " has been registered."));
+
+    }
+
+    @Test
+    public void testSellStock() {
+        //declara las variables
+        String username = "JuanPablo" + new Random().nextInt(1000000);
+        String password = "test1234";
+        String symbol = "MSFT";
+        int qty = 1;
+        //registra al usuario nuevo
+        AuthInfo authInfo = LoginEndpoint.login("Pedro", "Pedro");
+        RegisterResponseBody rrb = RegisterEndpoint.registerNewUser(username, password, authInfo);
+        //autentifica al usuario nuevo
+        AuthInfo authInfo2 = LoginEndpoint.login(username, password);
+        //hace la compra con el usuario nuevo
+        BuyResponseBody brb = BuyEndpoint.buyStock(symbol, qty, authInfo2 );
+        //hace la venta con el usuario nuevo.
+        SellResponseBody srb = SellEndpoint.sellStock(symbol, qty, authInfo2);
+        //verifica el mensaje del cuerpo de la respuesta.
+        assertTrue(srb.getMessage().contains("You sold " + qty + " share(s) from " + symbol));
+
     }
 
 
